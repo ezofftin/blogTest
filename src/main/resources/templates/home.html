@@ -4,7 +4,26 @@
 <th:block th:replace="/inc/header :: headerFragment"></th:block>
 
 <!-- 컨텐츠 영역 -->
-<p>스프링 부트 시작~~</p>
+<div class="container">
+    <th:block th:each="post : ${postList}">
+        <div class="card m-2">
+            <div class="card-body">
+                <h4 class="card-title" th:text="${post.title}">포스트 제목</h4>
+                <!-- 경로변수 사용하기 : localhost:8888/post/5-->
+                <a class="btn btn-primary" th:href="@{/post/{id}(id=${post.id})}">상세보기</a>
+            </div>
+        </div>
+    </th:block>
+
+    <ul class="pagination justify-content-center" th:if="${postList !=null}">
+        <li class="page-item" th:class="${postList.first} ? 'page-item disabled':'page-item'">
+            <a class="page-link" href="#" th:href="@{/(page=${postList.number -1})}">이전</a>
+        </li>
+        <li class="page-item" th:class="${postList.last} ? 'page-item disabled':'page-item'">
+            <a class="page-link" href="#" th:href="@{/(page=${postList.number +1})}">다음</a>
+        </li>
+    </ul>
+</div>
 
 
 <!-- 푸터 -->

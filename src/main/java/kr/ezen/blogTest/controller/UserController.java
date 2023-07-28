@@ -27,6 +27,7 @@ public class UserController {
     // 회원등록 Form 이동
     @GetMapping("/auth/register")
     public String registerUser() {
+//        System.out.println(9/0); // 예외처리 테스트
         return "user/register";
     }
 
@@ -50,7 +51,7 @@ public class UserController {
 
     // ****************************** REST API *************************
 //    @Autowired
-//    private UserRepository userRepository;
+    private UserRepository userRepository;
 
     // 회원등록처리
 //    @PostMapping("/user")
@@ -137,11 +138,11 @@ public class UserController {
 //    }
 
     // 페이징 처리 #2
-//    @GetMapping("/user/page")
-//    public @ResponseBody Page<User> getUserListPaging(@PageableDefault(page=1, size=2,
-//    direction = Sort.Direction.DESC, sort={"id", "username"}) Pageable pageable) {
-//        return userRepository.findAll(pageable);
-//    }
+    @GetMapping("/user/page")
+    public @ResponseBody Page<User> getUserListPaging(@PageableDefault(page=0, size=2,
+    direction = Sort.Direction.DESC, sort={"id", "username"}) Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
 }
 
 
