@@ -17,10 +17,10 @@
 
     <ul class="pagination justify-content-center" th:if="${postList !=null}">
         <li class="page-item" th:class="${postList.first} ? 'page-item disabled':'page-item'">
-            <a class="page-link" href="#" th:href="@{/(page=${postList.number -1})}">이전</a>
+            <a class="page-link" href="#" th:href="@{/(page=${postList.number -1})}">이전 페이지</a>
         </li>
         <li class="page-item" th:class="${postList.last} ? 'page-item disabled':'page-item'">
-            <a class="page-link" href="#" th:href="@{/(page=${postList.number +1})}">다음</a>
+            <a class="page-link" href="#" th:href="@{/(page=${postList.number +1})}">다음 페이지</a>
         </li>
     </ul>
 </div>

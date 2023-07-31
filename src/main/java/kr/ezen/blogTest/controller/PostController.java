@@ -35,8 +35,8 @@ public class PostController {
     @GetMapping({"", "/"})
     public String getPostList(Model m,
                               // page매개변수를 없애면 동적으로 받는다.
-                              @PageableDefault(size=2, sort = "id", direction = Sort.Direction.DESC)Pageable pageable) {
-        m.addAttribute("postList",postService.getPostList(pageable));
+                              @PageableDefault(size = 2, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        m.addAttribute("postList", postService.getPostList(pageable));
         return "home";
     }
 
@@ -64,5 +64,30 @@ public class PostController {
         postService.insertPost(post);
 
         return new ResponseDTO<>(HttpStatus.OK.value(), "새로운 포스트를 등록했습니다!!");
+    }
+
+    // 수정화면 이동
+    @GetMapping("/post/updatePost/{id}")
+    public String updatePost(@PathVariable int id, Model model) {
+        model.addAttribute("post", postService.getPost(id));
+
+        return "post/updatePost";
+    }
+
+    // 포스트 수정하기
+    @PutMapping("/post")
+    public @ResponseBody ResponseDTO<?> updatePost(@RequestBody Post post) {
+        postService.updatePost(post);
+        return new ResponseDTO<>(HttpStatus.OK.value(),
+                post.getId() + "번 포스트를 수정했습니다!!");
+    }
+
+    // 삭제하기
+    @DeleteMapping("/post/{id}")
+    public @ResponseBody ResponseDTO<?> deletePost(@PathVariable int id) {
+
+        postService.deletePost(id);
+        return new ResponseDTO<>(HttpStatus.OK.value(),
+                id + "번 포스트를 삭제했습니다.");
     }
 }

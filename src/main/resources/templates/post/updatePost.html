@@ -1,0 +1,25 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<th:block th:replace="/inc/header :: headerFragment"></th:block>
+
+<div class="container shadow-sm w-50 p-5 rounded mt-4">
+    <form class="form-join">
+        <input type="hidden" id="id" th:value="${post.id }">
+        <div class="form-group">
+            <label for="title">Title :</label>
+            <input type="text" class="form-control" placeholder="Enter title" id="title" th:value="${post.title }">
+        </div>
+        <div class="form-group">
+            <textarea class="form-control summernote" rows="5" id="content" th:text="${post.content}"></textarea>
+        </div>
+    </form>
+    <button class="btn btn-secondary" onclick="history.back()">돌아가기</button>
+    <button id="btn-update" class="btn btn-primary">포스트 수정</button>
+
+
+
+</div>
+<script src="/js/post.js"></script>
+<!-- 푸터 -->
+<th:block th:replace="/inc/footer :: footerFragment"></th:block>
+</body>
+</html>

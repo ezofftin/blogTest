@@ -1,7 +1,7 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 <th:block th:replace="/inc/header :: headerFragment"></th:block>
 
-<div class="container shadow-sm w-50 p-5 rounded mt-4">
+<div class="container p-5 rounded mt-4">
     <div class="mt-4">
       <h3 th:text="${post.title}"></h3>
     </div>
@@ -10,14 +10,72 @@
         <p th:text="${post.content}"></p>
     </div>
     <div>
-        포스트 번호 : <span id="id"><i th:text="${post.id}"></i></span>
+        포스트 번호 : <span id="id"><i th:text="${post.id}"></i></span><br/>
         작성자 :<span><i th:text="${post.user.username}"></i></span>
     </div>
-
+    <hr>
     <button onclick="history.back()" class="btn btn-secondary">돌아가기</button>
+    <th:block th:if="${post.user.username == session.principal.username}">
+        <a th:href="@{/post/updatePost/{id}(id=${post.id})}" class="btn btn-warning">수정하기</a>
+        <button id="btn-delete" class="btn btn-danger">삭제하기</button>
+    </th:block>
+    <hr>
+<!-- 댓글 목록-->
+    <div class="container mt-3" th:if="${post.replyList !=null}">
+        <table class="table">
+            <thead>
+            <tr>
+                <th colspan="3"><h5>댓글 목록</h5></th>
+            </tr>
+            <tr>
+                <th width="80%">내용</th>
+                <th width="10%">작성자</th>
+                <th width="10%">삭제</th>
+            </tr>
+            </thead>
+            <tbody>
 
+            <th:block th:each="reply : ${post.replyList}">
+            <tr>
+                <td th:text="${reply.content}"></td>
+                <td th:text="${reply.user.username}"></td>
+                <td></td>
+            </tr>
+            </th:block>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 댓글 -->
+    <div class="container mt-3">
+        <input type="hidden" id="postId" th:value="${post.id }">
+        <table class="table">
+                    <thead>
+                    <tr>
+                        <th><h5>댓글 달기</h5></th>
+                    </tr>
+                    </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <textarea id="reply-content" rows="1" class="form-control me-2"></textarea>
+                    <button id="btn-save-reply" class="btn btn-secondary">
+                        댓글등록</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+
+
+
+
+
 <script src="/js/post.js"></script>
+<script src="/js/reply.js"></script>
 <!-- 푸터 -->
 <th:block th:replace="/inc/footer :: footerFragment"></th:block>
 </body>
