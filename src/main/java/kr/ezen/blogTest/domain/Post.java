@@ -33,6 +33,13 @@ public class Post {
     // 양방향 관계에서 mappedBy는 Many의 반대쪽에 적어준다.
     // FK를 두개 만들 수 없기 때문에 mappedBy를 사용한다.
     // OneToMany는 mappedBy 속성을 갖는다.
-    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
+
+//    CascadeType.ALL :
+//    CascadeType.PERSIST :
+//    CascadeType.REMOVE:
+//    CascadeType.DETACH:
+//    CascadeType.REFRESH:
+
+    @OneToMany(mappedBy = "post", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<Reply> replyList = new ArrayList<>();
 }

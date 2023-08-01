@@ -24,4 +24,8 @@ public class ReplyService {
         reply.setPost(post);
         replyRepository.save(reply);
     }
+
+    public void deleteReply(int replyId) {
+        replyRepository.deleteById(replyId);
+    }
 }

@@ -25,6 +25,18 @@ let replyObject = {
         }).fail(function(error){
             alert("에러 발생 : " + error);
         });
+    },
+
+    // 댓글 삭제 후 다시 상세화면으로 이동
+    deleteReply: function (postId, replyId) {
+        alert("댓글 삭제 요청!!");
+
+        $.ajax({
+            type: "DELETE",
+            url: "/reply/" + replyId
+        }).done(function (response) {
+            location = "/post/"+postId;
+        });
     }
 }
 

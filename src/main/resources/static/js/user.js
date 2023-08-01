@@ -22,8 +22,23 @@ let userObject = {
            data:JSON.stringify(user),
            contentType: "application/json; charset=utf-8"
         }).done(function(response){
-            console.log(response);
+            // console.log(response);
             // location = "/";
+
+            // ########## validation 후
+            let status = response["status"]; // 응답 상태코드
+            if (status == 200) {
+                let message = response["data"];
+                alert(message);
+                location = "/";
+            }else{
+                let warn = "";
+                let errors = response["data"]; // 리턴된 Map데이터
+                if(errors.username !=null) warn = warn + errors.username + "\n";
+                if(errors.email !=null) warn = warn + errors.email + "\n";
+                alert(warn);
+            }
+
         }).fail(function(error){
             alert("에러 발생 : " + error);
         });

@@ -1,5 +1,7 @@
 package kr.ezen.blogTest.config;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -12,5 +14,10 @@ public class BlogWebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(
                 new AuthenticationInterceptor()
         ).addPathPatterns("/");
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
 }

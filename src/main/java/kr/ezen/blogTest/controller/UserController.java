@@ -3,9 +3,11 @@ package kr.ezen.blogTest.controller;
 import kr.ezen.blogTest.domain.RoleType;
 import kr.ezen.blogTest.domain.User;
 import kr.ezen.blogTest.dto.ResponseDTO;
+import kr.ezen.blogTest.dto.UserDTO;
 import kr.ezen.blogTest.exception.BlogException;
 import kr.ezen.blogTest.repository.UserRepository;
 import kr.ezen.blogTest.service.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,15 +16,23 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 @Controller
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     // 회원등록 Form 이동
     @GetMapping("/auth/register")
@@ -32,9 +42,20 @@ public class UserController {
     }
 
     @PostMapping("/auth/register")
-    public @ResponseBody ResponseDTO<?> insertUser(@RequestBody User user) {
-//        userService.insertUser(user);
-//        return new ResponseDTO<>(HttpStatus.OK.value(), user.getUsername() + "님 회원 가입 성공 완료!!");
+    public @ResponseBody ResponseDTO<?> insertUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
+        // 유효성 체크에 위배되는 데이터(에러)가 하나라도 있다면 true
+        if(bindingResult.hasErrors()){
+            Map<String, String> errorMap = new HashMap<>();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                // 어떤 필드(변수)에 에러가 있는지 해당메시지를 맵에 저장
+                errorMap.put(error.getField(), error.getDefaultMessage());
+            }
+
+            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), errorMap);
+        }
+
+        // UserDTO -> User 엔티티로 변환
+        User user = modelMapper.map(userDTO, User.class);
 
         // 아이디 중복체크
         User findUser = userService.getUser(user.getUsername());
