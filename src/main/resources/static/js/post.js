@@ -25,9 +25,24 @@ let postObject = {
            data:JSON.stringify(post),
            contentType: "application/json; charset=utf-8"
         }).done(function(response){
-            let msg = response["data"];
-            alert(msg);
-            location = "/";
+            // let msg = response["data"];
+            // alert(msg);
+            // location = "/";
+
+            // ########## validation 후
+            let status = response["status"]; // 응답 상태코드
+            if (status == 200) {
+                let message = response["data"];
+                alert(message);
+                location = "/";
+            }else{
+                let warn = "";
+                let errors = response["data"]; // 리턴된 Map데이터
+                if(errors.title !=null) warn = warn + errors.title + "\n";
+                if(errors.content !=null) warn = warn + errors.content + "\n";
+                alert(warn);
+            }
+
         }).fail(function(error){
             alert("에러 발생 : " + error);
         });

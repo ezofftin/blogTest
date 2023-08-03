@@ -2,8 +2,10 @@ package kr.ezen.blogTest.controller;
 
 import kr.ezen.blogTest.domain.Post;
 import kr.ezen.blogTest.domain.User;
+import kr.ezen.blogTest.dto.PostDTO;
 import kr.ezen.blogTest.dto.ResponseDTO;
 import kr.ezen.blogTest.service.PostService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -11,14 +13,22 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class PostController {
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 //    @GetMapping({"", "/"})
 //    public String getPostList() {
@@ -57,7 +67,20 @@ public class PostController {
 
     // 포스트 등록
     @PostMapping("/post")
-    public @ResponseBody ResponseDTO<?> insertPost(@RequestBody Post post, HttpSession session) {
+    public @ResponseBody ResponseDTO<?> insertPost(@Valid @RequestBody PostDTO postDTO, BindingResult bindingResult, HttpSession session) {
+
+        // 유효성 체크에 위배되는 데이터(에러)가 하나라도 있다면 true
+//        if(bindingResult.hasErrors()){
+//            Map<String, String> errorMap = new HashMap<>();
+//            for (FieldError error : bindingResult.getFieldErrors()) {
+//                // 어떤 필드(변수)에 에러가 있는지 해당메시지를 맵에 저장
+//                errorMap.put(error.getField(), error.getDefaultMessage());
+//            }
+//
+//            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), errorMap);
+//        }
+
+        Post post = modelMapper.map(postDTO, Post.class);
 
         User principal = (User) session.getAttribute("principal");
         post.setUser(principal);

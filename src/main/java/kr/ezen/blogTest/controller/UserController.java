@@ -44,15 +44,15 @@ public class UserController {
     @PostMapping("/auth/register")
     public @ResponseBody ResponseDTO<?> insertUser(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
         // 유효성 체크에 위배되는 데이터(에러)가 하나라도 있다면 true
-        if(bindingResult.hasErrors()){
-            Map<String, String> errorMap = new HashMap<>();
-            for (FieldError error : bindingResult.getFieldErrors()) {
-                // 어떤 필드(변수)에 에러가 있는지 해당메시지를 맵에 저장
-                errorMap.put(error.getField(), error.getDefaultMessage());
-            }
-
-            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), errorMap);
-        }
+//        if(bindingResult.hasErrors()){
+//            Map<String, String> errorMap = new HashMap<>();
+//            for (FieldError error : bindingResult.getFieldErrors()) {
+//                // 어떤 필드(변수)에 에러가 있는지 해당메시지를 맵에 저장
+//                errorMap.put(error.getField(), error.getDefaultMessage());
+//            }
+//
+//            return new ResponseDTO<>(HttpStatus.BAD_REQUEST.value(), errorMap);
+//        }
 
         // UserDTO -> User 엔티티로 변환
         User user = modelMapper.map(userDTO, User.class);
